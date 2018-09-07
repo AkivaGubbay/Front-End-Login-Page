@@ -1,8 +1,4 @@
-function foo(num) {
-  console.log("foo ...");
-  return num => {
-    return num * 2;
-  };
-}
+var a = undefined;
 
-console.log(foo(3));
+if (!a) console.log("yep...");
+else console.log("nup...");

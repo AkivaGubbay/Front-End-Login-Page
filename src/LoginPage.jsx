@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 import _ from "lodash";
 import { loginUser } from "./actions/UserActions";
-import { bindActionCreators } from "redux";
+//import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
 class LoginPage extends Component {
@@ -25,9 +25,12 @@ class LoginPage extends Component {
   }
 
   // Form handlers
-  handleChange = e => {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
+  onEmailChange = event => {
+    this.setState({ email: event.target.value });
+  };
+
+  onPasswordChange = event => {
+    this.setState({ password: event.target.value });
   };
 
   validateForm() {
@@ -40,6 +43,7 @@ class LoginPage extends Component {
   }
 
   onLoginButtonClick = event => {
+    console.log("you've clicked the right button!");
     this.props.loginUser(this.state.email, this.state.password);
     event.preventDefault();
   };
@@ -57,7 +61,7 @@ class LoginPage extends Component {
               <input
                 type="email"
                 className="login-text"
-                onChange={this.handleChange}
+                onChange={this.onEmailChange}
                 value={this.state.email}
               />
             </div>
@@ -68,7 +72,7 @@ class LoginPage extends Component {
               <input
                 type="password"
                 className="login-text"
-                onChange={this.handleChange}
+                onChange={this.onPasswordChange}
                 value={this.state.password}
               />
             </div>
@@ -97,17 +101,14 @@ class LoginPage extends Component {
 }
 
 // For connecting the component props to redux actions
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {
-      loginUser
-    },
-    dispatch
-  );
+const mapDispatchToProps = {
+  loginUser
 };
 
 const mapStateToProps = state => {
+  //console.log("state.user: ", state.user);
   var myProps = _.assign({}, { user: state.user });
+  //console.log("myProps: ", myProps);
   return myProps;
 };
 

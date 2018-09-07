@@ -1,6 +1,7 @@
 import _ from "lodash";
 import thunk from "redux-thunk";
-import { createStore, combineReducers, applyMiddleware } from "redux";
+import { createStore, /* combineReducers, */ applyMiddleware } from "redux";
+import { LOGIN_FAIL, LOGIN_OK } from "./Constants";
 
 const initialUser = {
   user: null
@@ -8,17 +9,22 @@ const initialUser = {
   // alerts: []
 };
 
-/* Put reducer functon here */
 const loginReducer = (state = initialUser, action) => {
+  console.log("reducer has been called.");
+  console.log("with state:", state);
+  console.log("with action:", action);
   switch (action.type) {
-    case "LOGIN_OK":
+    case LOGIN_OK:
+      console.log(
+        "In reducer, LOGIN_OK, action.payload.userName: ",
+        action.payload.userName
+      );
       var newState = _.assign({}, state, {
-        //waiting_for_server: false,
         login: action.payload.userName
       });
       return newState;
 
-    case "LOGIN_FAIL":
+    case LOGIN_FAIL:
       console.log("reducer - LOGIN_FAIL");
       console.log("action object: ", action);
       break;
@@ -28,14 +34,9 @@ const loginReducer = (state = initialUser, action) => {
   }
 };
 
-// Combine reducers together for creating the store
-const rootReducer = combineReducers({
-  /* All the Reducer functions */
-  loginReducer
-});
-
-// To executes actions in async manner
-const middleware = applyMiddleware(thunk);
-
 // Creates the  store and attaches the reducers
-export const store = createStore(rootReducer, { user: null }, middleware);
+export default createStore(
+  loginReducer,
+  { user: null },
+  applyMiddleware(thunk)
+);
