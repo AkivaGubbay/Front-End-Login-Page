@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Button } from "react-bootstrap";
-import _ from "lodash";
+//import _ from "lodash";
 import { loginUser } from "./actions/UserActions";
 //import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -15,7 +15,20 @@ class LoginPage extends Component {
 
   /* componentWillMount() */
 
-  /* componentWillReceiveProps */
+  componentWillReceiveProps(newProps) {
+    // Activated when:
+    // the store's state changes ->
+    // props of this component changes
+
+    console.log("In LoginPage, componentWillReceiveProps was activated ...");
+
+    if (newProps.isAuthenticated) {
+      //utils.setCookie('email', this.state.email);
+      //Redirecting the url
+      console.log("changing url to /loginsuccess");
+      this.props.history.push("/loginsuccess");
+    }
+  }
 
   shouldComponentUpdate(newProps, newState) {
     return (
@@ -36,10 +49,11 @@ class LoginPage extends Component {
   validateForm() {
     return (
       this.state.email &&
-      this.state.password &&
+      this.state
+        .password /* &&
       this.state.email.length > 5 &&
-      this.state.password.length > 4
-    ); //put lengths in constant class
+      this.state.password.length > 4 */
+    );
   }
 
   onLoginButtonClick = event => {
@@ -106,10 +120,14 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = state => {
-  //console.log("state.user: ", state.user);
+  const { isAuthenticated } = state;
+  return {
+    isAuthenticated
+  };
+  /* //console.log("state.user: ", state.user);
   var myProps = _.assign({}, { user: state.user });
   //console.log("myProps: ", myProps);
-  return myProps;
+  return myProps; */
 };
 
 export default connect(
